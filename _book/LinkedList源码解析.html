@@ -1,0 +1,738 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>LinkedList源码解析.md · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    
+    <link rel="prev" href="ArrayList源码解析.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    Java集合
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="HashMap源码解析-jdk1.7.html">
+            
+                <a href="HashMap源码解析-jdk1.7.html">
+            
+                    
+                    hasmap1.7源码解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.2" data-path="ConcurrentHashMap-1.7.html">
+            
+                <a href="ConcurrentHashMap-1.7.html">
+            
+                    
+                    concurrentHashmap1.7源码解析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.3" data-path="Java 8系列之重新认识HashMap.html">
+            
+                <a href="Java 8系列之重新认识HashMap.html">
+            
+                    
+                    Java 8系列之重新认识HashMap
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2.4" data-path="ArrayList源码解析.html">
+            
+                <a href="ArrayList源码解析.html">
+            
+                    
+                    ArrayList源码解析.md
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.2.5" data-path="LinkedList源码解析.html">
+            
+                <a href="LinkedList源码解析.html">
+            
+                    
+                    LinkedList源码解析.md
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    Java并发编程
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="并发锁相关.html">
+            
+                <a href="并发锁相关.html">
+            
+                    
+                    并发锁相关.md
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3.2" data-path="鹅厂一面ReentrantLock差点一套带走我.html">
+            
+                <a href="鹅厂一面ReentrantLock差点一套带走我.html">
+            
+                    
+                    鹅厂一面ReentrantLock差点一套带走我.md
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    Spring源码
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="Spring事务原理.html">
+            
+                <a href="Spring事务原理.html">
+            
+                    
+                    Spring事务原理.md
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4.2" data-path="Spring源码解析.html">
+            
+                <a href="Spring源码解析.html">
+            
+                    
+                    Spring源码解析.md
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >LinkedList源码解析.md</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="linkedlist&#x6E90;&#x7801;&#x89E3;&#x6790;-jdk18">LinkedList&#x6E90;&#x7801;&#x89E3;&#x6790;-jdk1.8</h1>
+<ul>
+<li>&#x4ECE;&#x4E0B;&#x9762;&#x7684;UML&#x7C7B;&#x56FE;&#x53EF;&#x4EE5;&#x5F97;&#x77E5;&#xFF0C;LinkedList&#x7EE7;&#x627F;&#x4E86;AbstractSequentialList&#x62BD;&#x8C61;&#x7C7B;&#xFF0C;&#x540C;&#x65F6;&#x5B9E;&#x73B0;&#x4E86;List Deque Serializable Cloneable&#x63A5;&#x53E3;</li>
+<li>AbstractSequentialList:&#x53EA;&#x652F;&#x6301;&#x6309;&#x6B21;&#x5E8F;&#x8BBF;&#x95EE;</li>
+<li>Deque&#xFF1A;&#x53CC;&#x5411;&#x961F;&#x5217;</li>
+<li>LinkedList&#x4E0E;ArrayList&#x7684;&#x4E0D;&#x540C;&#x5728;&#x4E8E;&#xFF0C;ArrayList&#x7684;&#x5B9E;&#x73B0;&#x662F;&#x91C7;&#x7528;&#x7684;&#x65F6;&#x5927;&#x5C0F;&#x53EF;&#x53D8;&#x7684;&#x6570;&#x7EC4;&#xFF0C;LinkedList&#x91C7;&#x7528;&#x7684;&#x662F;&#x53CC;&#x5411;&#x94FE;&#x8868;&#x7684;&#x5B9E;&#x73B0;&#xFF0C;&#x57FA;&#x4E8E;&#x94FE;&#x8868;&#x7684;&#x5B9E;&#x73B0;&#x65B9;&#x5F0F;&#x4F7F;&#x5F97;&#x5728;&#x63D2;&#x5165;&#x6838;&#x5220;&#x9664;&#x7684;&#x6548;&#x7387;&#x6BD4;ArrayList&#x8981;&#x9AD8;&#xFF0C;ArrayList&#x7684;&#x968F;&#x673A;&#x8BBF;&#x95EE;&#x6548;&#x7387;&#x8981;&#x9AD8;&#x4E8E;LinkedList&#xFF0C;&#x6570;&#x7EC4;&#x7684;&#x968F;&#x673A;&#x8BBF;&#x95EE;&#x6548;&#x7387;&#x5F88;&#x9AD8;&#x3002;</li>
+</ul>
+<p><img src="imags/LinkList.png" alt=""></p>
+<ul>
+<li><p>&#x5206;&#x6790;&#x6E90;&#x7801;&#x4ECE;&#x6784;&#x9020;&#x51FD;&#x6570;&#x5F00;&#x59CB;--&gt;Constructs&#xFF1A;LinkedList&#x6709;&#x4E24;&#x4E2A;&#x6784;&#x9020;&#x51FD;&#x6570;</p>
+<ul>
+<li>&#x6709;&#x4E24;&#x4E2A;&#x6784;&#x9020;&#x51FD;&#x6570;&#xFF0C;&#x9ED8;&#x8BA4;&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;&#x548C;&#x4F20;&#x5165;&#x96C6;&#x5408;&#x7684;&#x6784;&#x9020;&#x51FD;&#x6570;</li>
+<li>&#x4E09;&#x4E2A;&#x6210;&#x5458;&#x53D8;&#x91CF;&#xFF0C;size&#x4E3A;LinkedList&#x7684;&#x5927;&#x5C0F;&#xFF0C;first&#x4E3A;&#x94FE;&#x8868;&#x7684;&#x5934;&#x7ED3;&#x70B9;&#xFF0C;last&#x4E3A;&#x5C3E;&#x7ED3;&#x70B9;</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-comment">/**
+* Constructs an empty list.
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">LinkedList</span><span class="hljs-params">()</span> </span>{
+}
+
+<span class="hljs-comment">/**
+* Constructs a list containing the elements of the specified
+* collection, in the order they are returned by the collection&apos;s
+* iterator.
+*
+* <span class="hljs-doctag">@param</span>  c the collection whose elements are to be placed into this list
+* <span class="hljs-doctag">@throws</span> NullPointerException if the specified collection is null
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-title">LinkedList</span><span class="hljs-params">(Collection&lt;? extends E&gt; c)</span> </span>{
+    <span class="hljs-comment">// &#x9ED8;&#x8BA4;&#x6784;&#x9020;&#x51FD;&#x6570;</span>
+    <span class="hljs-keyword">this</span>();
+    <span class="hljs-comment">// add all&#x96C6;&#x5408;</span>
+    addAll(c);
+}
+
+    <span class="hljs-keyword">transient</span> <span class="hljs-keyword">int</span> size = <span class="hljs-number">0</span>;
+
+    <span class="hljs-comment">/**
+     * Pointer to first node.
+     * Invariant: (first == null &amp;&amp; last == null) ||
+     *            (first.prev == null &amp;&amp; first.item != null)
+     */</span>
+    <span class="hljs-comment">//&#x524D;&#x9A71;&#x7ED3;&#x70B9;</span>
+    <span class="hljs-keyword">transient</span> Node&lt;E&gt; first;
+
+    <span class="hljs-comment">/**
+     * Pointer to last node.
+     * Invariant: (first == null &amp;&amp; last == null) ||
+     *            (last.next == null &amp;&amp; last.item != null)
+     */</span>
+    <span class="hljs-comment">//&#x540E;&#x7EE7;&#x7ED3;&#x70B9;</span>
+    <span class="hljs-keyword">transient</span> Node&lt;E&gt; last;
+</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>Node<e></e></p>
+<ul>
+<li>&#x4E86;&#x89E3;Node<e> next&#x548C;prev&#x7684;&#x542B;&#x4E49;&#xFF0C;&#x5148;&#x4E86;&#x89E3;&#x4EC0;&#x4E48;&#x662F;&#x53CC;&#x5411;&#x94FE;&#x8868;</e></li>
+<li>&#x53CC;&#x5411;&#x94FE;&#x8868;&#x4E5F;&#x53EB;&#x53CC;&#x94FE;&#x8868;&#xFF0C;&#x662F;&#x94FE;&#x8868;&#x4E00;&#x79CD;&#xFF0C;&#x5B83;&#x7684;&#x6BCF;&#x4E2A;&#x6570;&#x636E;&#x7ED3;&#x70B9;&#x90FD;&#x6709;&#x4E24;&#x4E2A;&#x6307;&#x9488;&#xFF0C;&#x5206;&#x522B;&#x6307;&#x5411;&#x76F4;&#x63A5;&#x540E;&#x7EE7;&#x548C;&#x76F4;&#x63A5;&#x524D;&#x9A71;&#x3002;&#x6240;&#x4EE5;&#x53CC;&#x5411;&#x94FE;&#x8868;&#x4E2D;&#x7684;&#x4EFB;&#x610F;&#x4E00;&#x4E2A;&#x7ED3;&#x70B9;&#x5F00;&#x59CB;&#xFF0C;&#x90FD;&#x53EF;&#x4EE5;&#x5F88;&#x65B9;&#x4FBF;&#x7684;&#x8BBF;&#x95EE;&#x5B83;&#x7684;&#x524D;&#x9A71;&#x7ED3;&#x70B9;&#x548C;&#x540E;&#x7EED;&#x7ED3;&#x70B9;&#x3002;</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-comment">// &#x67E5;&#x770B;Node&#x65B9;&#x6CD5;,&#x79C1;&#x6709;&#x9759;&#x6001;&#x65B9;&#x6CD5;</span>
+<span class="hljs-keyword">private</span> <span class="hljs-keyword">static</span> <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Node</span>&lt;<span class="hljs-title">E</span>&gt; </span>{
+    <span class="hljs-comment">// LinkedList&lt;E&gt; &#x5C31;&#x662F;&#x6307;&#x7684;&#x5143;&#x7D20;</span>
+    E item;
+    <span class="hljs-comment">// next&#x6307;&#x9488;&#x6307;&#x5411;item&#x7684;&#x4E0B;&#x4E00;&#x4E2A;&#x5143;&#x7D20;</span>
+    Node&lt;E&gt; next;
+    <span class="hljs-comment">// next&#x6307;&#x9488;&#x6307;&#x5411;item&#x7684;&#x4E0A;&#x4E00;&#x4E2A;&#x5143;&#x7D20;</span>
+    Node&lt;E&gt; prev;
+
+    <span class="hljs-comment">//&#x6784;&#x9020;&#x65B9;&#x6CD5;</span>
+    Node(Node&lt;E&gt; prev, E element, Node&lt;E&gt; next) {
+        <span class="hljs-keyword">this</span>.item = element;
+        <span class="hljs-keyword">this</span>.next = next;
+        <span class="hljs-keyword">this</span>.prev = prev;
+    }
+}
+</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>add&#x65B9;&#x6CD5;&#x548C;addAll&#x5DEE;&#x4E0D;&#x591A;&#xFF0C;&#x5148;&#x770B;Add&#x65B9;&#x6CD5;</p>
+<ul>
+<li>&#x5176;&#x4E2D;node&#xFF08;&#xFF09;&#x65B9;&#x6CD5;&#x6709;&#x70B9;&#x7CBE;&#x9AD3;&#xFF0C;&#x83B7;&#x53D6;&#x6307;&#x5B9A;&#x4E0B;&#x6807;&#x7684;&#x6570;&#x636E;&#x7684;&#x65F6;&#x5019;&#x5E76;&#x4E0D;&#x662F;&#x4ECE;&#x5934;&#x5230;&#x5C3E;&#x7684;&#x53BB;&#x904D;&#x5386;&#xFF0C;&#x4F7F;&#x7528;&#x7684;&#x662F;size&gt;&gt;1&#xFF0C;&#x53F3;&#x79FB;&#x4E00;&#x4F4D;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x4E00;&#x534A;&#xFF0C;&#x76F8;&#x5BF9;&#x6765;&#x8BF4;&#x8FD8;&#x662F;&#x80FD;&#x7701;&#x4E0B;&#x5F88;&#x591A;&#x65F6;&#x95F4;</li>
+</ul>
+<pre><code class="lang-java">
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">add</span><span class="hljs-params">(E e)</span> </span>{
+    <span class="hljs-comment">//&#x4E3B;&#x8981;&#x5C31;&#x662F;&#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#xFF0C;&#x70B9;&#x8FDB;&#x53BB;&#x770B;&#x770B;</span>
+    linkLast(e);
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+}
+
+<span class="hljs-comment">/**
+* Links e as last element(&#x94FE;&#x63A5;e&#x6700;&#x4E3A;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x5143;&#x7D20;).
+*/</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">linkLast</span><span class="hljs-params">(E e)</span> </span>{
+    <span class="hljs-comment">// &#x628A;&#x5F53;&#x524D;&#x7684;DLL&#xFF08;&#x53CC;&#x5411;&#x94FE;&#x8868;&#xFF09;&#x8868;&#x4E2D;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x7ED9;l</span>
+    <span class="hljs-keyword">final</span> Node&lt;E&gt; l = last;
+    <span class="hljs-comment">// &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x65B0;&#x8282;&#x70B9; e, e&#x7684;prev&#x6307;&#x9488;&#x6307;&#x5411;l&#xFF0C;e&#x7684;next&#x6307;&#x9488;&#x6307;&#x5411;null</span>
+    <span class="hljs-comment">// &#x4E5F;&#x5C31;&#x662F;&#x8BF4;e&#x662F;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#xFF0C;last = e</span>
+    <span class="hljs-keyword">final</span> Node&lt;E&gt; newNode = <span class="hljs-keyword">new</span> Node&lt;&gt;(l, e, <span class="hljs-keyword">null</span>);
+    last = newNode;
+    <span class="hljs-comment">// &#x5982;&#x679C;DLL&#x7684;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x5143;&#x7D20;&#x662F;null&#xFF0C;&#x8BF4;&#x660E;&#x5F53;&#x524D;&#x5C31;&#x662F;&#x7B2C;0&#x4E2A;&#xFF0C;&#x6240;&#x4EE5;first = last = e</span>
+    <span class="hljs-keyword">if</span> (l == <span class="hljs-keyword">null</span>)
+        first = newNode;
+    <span class="hljs-keyword">else</span>
+        l.next = newNode;
+    size++;
+    modCount++;
+}
+
+<span class="hljs-function"><span class="hljs-keyword">private</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">isPositionIndex</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index)</span> </span>{
+    <span class="hljs-keyword">return</span> index &gt;= <span class="hljs-number">0</span> &amp;&amp; index &lt;= size;
+}
+
+<span class="hljs-comment">// &#x8FD9;&#x4E2A;&#x65B9;&#x6CD5;&#x7A0D;&#x5FAE;&#x7279;&#x6B8A;&#x4E00;&#x70B9;&#xFF0C;&#x5355;&#x72EC;&#x63D0;&#x51FA;&#x6765;</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">add</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index, E element)</span> </span>{
+    checkPositionIndex(index);
+    <span class="hljs-comment">// &#x5982;&#x679C;add&#x7684;index&#x4E3A;size&#x7684;&#x65F6;&#x5019;&#x5C31;&#x662F;&#x5F80;&#x94FE;&#x8868;&#x7684;&#x6700;&#x540E;&#x52A0;&#x8FD9;&#x4E2A;&#x5F88;&#x5BB9;&#x6613;&#x7406;&#x89E3;</span>
+    <span class="hljs-keyword">if</span> (index == size)
+        linkLast(element);
+    <span class="hljs-keyword">else</span>
+        <span class="hljs-comment">// &#x5728;size&#x957F;&#x5EA6;&#x524D;&#x52A0;&#x5143;&#x7D20;&#xFF0C;node&#xFF08;index&#xFF09;&#x62FF;&#x5230;&#x8BE5;&#x5143;&#x7D20;&#x7684;node&#x5BF9;&#x8C61;</span>
+        linkBefore(element, node(index));
+}
+
+<span class="hljs-comment">/**
+ * Inserts element e before non-null Node succ.
+ */</span>
+<span class="hljs-function"><span class="hljs-keyword">void</span> <span class="hljs-title">linkBefore</span><span class="hljs-params">(E e, Node&lt;E&gt; succ)</span> </span>{
+    <span class="hljs-comment">// assert succ != null;</span>
+    <span class="hljs-comment">// succ&#x7684;&#x524D;&#x9A71;&#x7ED3;&#x70B9;&#x5BF9;&#x8C61;&#x7ED9;pred</span>
+    <span class="hljs-keyword">final</span> Node&lt;E&gt; pred = succ.prev;
+    <span class="hljs-comment">// &#x7EC4;&#x88C5;&#x5F53;&#x524D;&#x8981;&#x63D2;&#x5165;&#x5143;&#x7D20;&#x7684;node&#x5BF9;&#x8C61;&#xFF0C;e&#x7684;&#x524D;&#x9A71;&#x7ED3;&#x70B9;&#x4E3A;succ&#x7684;&#x524D;&#x9A71;&#x7ED3;&#x70B9;&#xFF0C;e&#x7684;&#x540E;&#x7EE7;&#x7ED3;&#x70B9;&#x4E3A;succ&#x7ED3;&#x70B9;</span>
+    <span class="hljs-keyword">final</span> Node&lt;E&gt; newNode = <span class="hljs-keyword">new</span> Node&lt;&gt;(pred, e, succ);
+    <span class="hljs-comment">// &#x7EC4;&#x88C5;&#x5B8C;&#x7ED3;&#x70B9;&#x7684;&#x5185;&#x5BB9;&#x540E;&#xFF0C;&#x9700;&#x8981;&#x628A;&#x94FE;&#x8868;&#x4E32;&#x8D77;&#x6765;&#xFF0C;&#x90A3;&#x4E48;&#x539F;&#x6765;succ&#x7ED3;&#x70B9;&#x7684;&#x524D;&#x7EE7;&#x7ED3;&#x70B9;&#x7684;&#x540E;&#x7EE7;&#x7ED3;&#x70B9;&#x9700;&#x8981;&#x6539;&#x4E3A;&#x65B0;&#x7ED3;&#x70B9;&#xFF0C;succ&#x7684;&#x524D;&#x9A71;&#x7ED3;&#x70B9;&#x4E5F;&#x6539;&#x4E3A;&#x65B0;&#x7ED3;&#x70B9;&#x3002;</span>
+    succ.prev = newNode;
+    <span class="hljs-keyword">if</span> (pred == <span class="hljs-keyword">null</span>)
+        first = newNode;
+    <span class="hljs-keyword">else</span>
+        pred.next = newNode;
+    size++;
+    modCount++;
+}
+
+<span class="hljs-comment">/**
+ * Returns the (non-null) Node at the specified element index.
+ */</span>
+<span class="hljs-function">Node&lt;E&gt; <span class="hljs-title">node</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index)</span> </span>{
+    <span class="hljs-comment">// assert isElementIndex(index);</span>
+    <span class="hljs-comment">// &#x5982;&#x679C;index&#x5C0F;&#x4E8E;&#xFF08;&#x5143;&#x7D20;size/2&#xFF09;</span>
+    <span class="hljs-keyword">if</span> (index &lt; (size &gt;&gt; <span class="hljs-number">1</span>)) {
+        <span class="hljs-comment">// &#x4ECE;&#x524D;&#x5F80;&#x540E;&#x627E;</span>
+        Node&lt;E&gt; x = first;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = <span class="hljs-number">0</span>; i &lt; index; i++)
+            x = x.next;
+        <span class="hljs-keyword">return</span> x;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// &#x4ECE;&#x540E;&#x5F80;&#x524D;&#x627E;</span>
+        Node&lt;E&gt; x = last;
+        <span class="hljs-keyword">for</span> (<span class="hljs-keyword">int</span> i = size - <span class="hljs-number">1</span>; i &gt; index; i--)
+            x = x.prev;
+        <span class="hljs-keyword">return</span> x;
+    }
+}
+
+<span class="hljs-comment">// addAll(Collection&lt;? extends E&gt; c)&#x548C;&#x6B21;&#x65B9;&#x6CD5;&#x4E00;&#x6837;&#xFF0C;&#x53EA;&#x662F;index&#x4F20;&#x5165;&#x7684;size&#x503C;&#x3002;</span>
+<span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">boolean</span> <span class="hljs-title">addAll</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index, Collection&lt;? extends E&gt; c)</span> </span>{
+    checkPositionIndex(index);
+
+    Object[] a = c.toArray();
+
+    <span class="hljs-keyword">int</span> numNew = a.length;
+
+    <span class="hljs-keyword">if</span> (numNew == <span class="hljs-number">0</span>){
+        <span class="hljs-keyword">return</span> <span class="hljs-keyword">false</span>;
+    }
+    <span class="hljs-comment">// &#x5B9A;&#x4E49;&#x4E86;&#x4E24;&#x4E2A;Node&#x5BF9;&#x8C61; pred &#x548C;succ</span>
+    <span class="hljs-comment">// pred &#x8981;&#x63D2;&#x5165;&#x7ED3;&#x70B9;&#x7684;&#x524D;&#x4E00;&#x4E2A;&#x7ED3;&#x70B9;</span>
+    <span class="hljs-comment">// succ &#x8981;&#x63D2;&#x5165;&#x7ED3;&#x70B9;&#x7684;&#x540E;&#x4E00;&#x4E2A;&#x7ED3;&#x70B9;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;node(index)&#x7684;&#x90A3;&#x4E2A;&#x503C;</span>
+    Node&lt;E&gt; pred, succ;
+    <span class="hljs-keyword">if</span> (index == size) {
+        <span class="hljs-comment">// &#x53EF;&#x4EE5;&#x7406;&#x89E3;&#x4E3A;&#x4E24;&#x4E2A;LinkedList&#xFF0C;List1&#x4E3A;&#x65B0;&#x5EFA;&#x7684;&#x5BF9;&#x8C61;&#x6216;&#x6709;&#x503C;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;List2&#x4E3A;&#x6709;&#x503C;&#x7684;&#x5BF9;&#x8C61;</span>
+        <span class="hljs-comment">//List1.addAll(size,List2)</span>
+        <span class="hljs-comment">// succ&#x5C31;&#x4E0D;&#x5B58;</span>
+        succ = <span class="hljs-keyword">null</span>;
+        <span class="hljs-comment">// pred&#x8282;&#x70B9;&#x4E3A;&#x5F53;&#x524D;&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x8282;&#x70B9;</span>
+        pred = last;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// &#x83B7;&#x53D6;index&#x4E0B;&#x6807;&#x7684;&#x8282;&#x70B9;</span>
+        succ = node(index);
+        <span class="hljs-comment">// pred&#x4E3A;succ&#x8282;&#x70B9;&#x7684;&#x524D;&#x4E00;&#x4E2A;&#x8282;&#x70B9;</span>
+        pred = succ.prev;
+    }
+    <span class="hljs-comment">// &#x5FAA;&#x73AF;&#x5C06;&#x6570;&#x636E;&#x8FDB;&#x884C;&#x94FE;&#x63A5;</span>
+    <span class="hljs-keyword">for</span> (Object o : a) {
+        <span class="hljs-meta">@SuppressWarnings</span>(<span class="hljs-string">&quot;unchecked&quot;</span>) 
+        E e = (E) o;
+        Node&lt;E&gt; newNode = <span class="hljs-keyword">new</span> Node&lt;&gt;(pred, e, <span class="hljs-keyword">null</span>);
+        <span class="hljs-keyword">if</span> (pred == <span class="hljs-keyword">null</span>)
+            first = newNode;
+        <span class="hljs-keyword">else</span>
+            pred.next = newNode;
+        pred = newNode;
+    }
+    <span class="hljs-keyword">if</span> (succ == <span class="hljs-keyword">null</span>) {
+        <span class="hljs-comment">// &#x4E5F;&#x5C31;&#x662F;addAll(size,List),&#x6700;&#x540E;&#x4E00;&#x4E2A;&#x5C31;&#x4E3A;&#x6700;&#x540E;&#x94FE;&#x63A5;&#x7684;node&#x7ED3;&#x70B9;</span>
+        last = pred;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-comment">// &#x5426;&#x5219;&#x5C31;&#x8981;&#x628A;&#x540E;&#x9762;&#x65AD;&#x5F00;&#x7684;&#x94FE;&#x63A5;&#x4E0A;&#xFF0C;&#x5F62;&#x6210;&#x53CC;&#x5411;&#x94FE;&#x8868;</span>
+        pred.next = succ;
+        succ.prev = pred;
+    }
+    <span class="hljs-comment">// &#x66F4;&#x65B0;List&#x7684;&#x957F;&#x5EA6;&#x503C;size</span>
+    size += numNew;
+    modCount++;
+    <span class="hljs-keyword">return</span> <span class="hljs-keyword">true</span>;
+}
+</code></pre>
+</li>
+</ul>
+<ul>
+<li><p>remove&#x65B9;&#x6CD5;&#x6E90;&#x7801;&#x89E3;&#x6790;</p>
+<p>~~~java
+// &#x79FB;&#x9664;index&#x7684;&#x8282;&#x70B9;
+public E remove(int index) {</p>
+<pre><code>// &#x4E0B;&#x6807;&#x68C0;&#x67E5;
+// index &gt;= 0 &amp;&amp; index &lt; size;
+checkElementIndex(index);
+// &#x8C03;&#x7528;unlink&#x65B9;&#x6CD5;node(index) &#x83B7;&#x5F97;index&#x4E0B;&#x6807;&#x7684;&#x8282;&#x70B9;&#x5BF9;&#x8C61;
+return unlink(node(index));
+</code></pre><p>}</p>
+</li>
+</ul>
+<p>  public boolean remove(Object o) {
+      if (o == null) {
+          for (Node<e> x = first; x != null; x = x.next) {
+              if (x.item == null) {
+                  unlink(x);
+                  return true;
+              }
+          }
+      } else {
+          for (Node<e> x = first; x != null; x = x.next) {
+              if (o.equals(x.item)) {
+                  unlink(x);
+                  return true;
+              }
+          }
+      }
+      return false;
+  }</e></e></p>
+<p>  E unlink(Node<e> x) {
+      // assert x != null;
+      // &#x83B7;&#x53D6;&#x8282;&#x70B9;&#x7684;&#x503C;&#xFF0C; &#x8981;&#x5220;&#x9664;&#x7684;&#x8282;&#x70B9;
+      final E element = x.item;
+      // x&#x7684;&#x540E;&#x7EE7;&#x8282;&#x70B9;
+      final Node<e> next = x.next;
+      // x&#x7684;&#x524D;&#x7EE7;&#x8282;&#x70B9;
+      final Node<e> prev = x.prev;</e></e></e></p>
+<pre><code>  if (prev == null) {
+      // &#x6CA1;&#x6709;&#x524D;&#x7EE7;&#x8282;&#x70B9;&#xFF0C;&#x90A3;&#x4E48;&#x5C31;&#x662F;&#x7B2C;&#x4E00;&#x4E2A;&#x8282;&#x70B9;&#x5BF9;&#x8C61;
+      // &#x5934;&#x90E8;&#x6307;&#x5411;x&#x5220;&#x9664;&#x8282;&#x70B9;&#x7684;&#x540E;&#x7EE7;&#x8282;&#x70B9;
+      first = next;
+  } else {
+      // &#x5220;&#x9664;&#x5143;&#x7D20;&#x7684;&#x524D;&#x7EE7;&#x8282;&#x70B9;--&gt;&#x5220;&#x9664;&#x5143;&#x7D20;&#x7684;&#x540E;&#x7EE7;&#x8282;&#x70B9;
+      prev.next = next;
+      // &#x6E05;&#x7A7A;&#x5220;&#x9664;&#x8282;&#x70B9;&#x7684;&#x524D;&#x7EE7;&#x6307;&#x5411;
+      x.prev = null;
+  }
+  // &#x5220;&#x9664;&#x8282;&#x70B9;&#x7684;&#x540E;&#x7EE7;&#x8282;&#x70B9;=null
+  if (next == null) {
+      //&#x5C3E;&#x90E8;&#x6307;&#x5411;&#x5220;&#x9664;&#x8282;&#x70B9;&#x7684;&#x524D;&#x7EE7;&#x8282;&#x70B9;
+      last = prev;
+  } else {
+      //&#x5220;&#x9664;&#x8282;&#x70B9;&#x7684;&#x540E;&#x7EE7;&#x8282;&#x70B9;&#xFF0C;&#x6307;&#x5411;&#x5220;&#x9664;&#x8282;&#x70B9;&#x7684;&#x524D;&#x7EE7;&#x8282;&#x70B9;
+      next.prev = prev;
+      // &#x6E05;&#x7A7A;&#x5220;&#x9664;&#x8282;&#x70B9;x&#x7684;&#x540E;&#x7EE7;&#x6307;&#x5411;
+      x.next = null;
+  }
+
+  x.item = null;//&#x4FBF;&#x4E8E;GC
+  // &#x66F4;&#x65B0;size&#x503C;
+  size--;
+  modCount++;
+  return element;
+</code></pre><p>  }</p>
+<pre><code>
+
+
+- &#x4F1A;&#x6709;&#x4E00;&#x4E9B;&#x7279;&#x6B8A;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x5173;&#x4E8E;&#x5934;&#x548C;&#x5C3E;&#x7684;&#xFF0C;&#x90FD;&#x548C;&#x4E0A;&#x9762;&#x5DEE;&#x4E0D;&#x591A;
+
+  ~~~java
+  /**
+   * Links e as first element.
+   */
+  private void linkFirst(E e) {
+      final Node&lt;E&gt; f = first;
+      final Node&lt;E&gt; newNode = new Node&lt;&gt;(null, e, f);
+      first = newNode;
+      if (f == null)
+          last = newNode;
+      else
+          f.prev = newNode;
+      size++;
+      modCount++;
+  }
+
+  /**
+    * Links e as last element.
+    */
+  void linkLast(E e) {
+      final Node&lt;E&gt; l = last;
+      final Node&lt;E&gt; newNode = new Node&lt;&gt;(l, e, null);
+      last = newNode;
+      if (l == null)
+          first = newNode;
+      else
+          l.next = newNode;
+      size++;
+      modCount++;
+  }
+</code></pre><ul>
+<li><p>&#x67E5;&#x627E;&#x65B9;&#x6CD5;</p>
+<ul>
+<li>&#x5148;&#x5065;&#x5EB7;&#x68C0;&#x67E5;&#xFF0C;&#x7136;&#x540E;node(index)&#x83B7;&#x53D6;&#x5143;&#x7D20;&#x5BF9;&#x8C61;&#xFF0C;&#x5728;&#x83B7;&#x53D6;item&#x4E5F;&#x5C31;&#x662F;&#x5143;&#x7D20;&#x7684;&#x503C;</li>
+</ul>
+<pre><code class="lang-java"><span class="hljs-function"><span class="hljs-keyword">public</span> E <span class="hljs-title">get</span><span class="hljs-params">(<span class="hljs-keyword">int</span> index)</span> </span>{
+  checkElementIndex(index);
+    <span class="hljs-keyword">return</span> node(index).item;
+}
+</code></pre>
+</li>
+<li><p>&#x904D;&#x5386;</p>
+<pre><code>add &#x518D;get &#x6548;&#x7387;&#x7279;&#x522B;&#x4F4E; &#x6CA1;&#x6709;ArrayList&#x6027;&#x80FD;&#x597D;&#x3002;&#x4F46;&#x662F;ArrayList&#x7684;&#x7279;&#x70B9;&#x662F;&#x5BFB;&#x5740;&#x8BFB;&#x53D6;&#x6570;&#x636E;&#x6BD4;&#x8F83;&#x5BB9;&#x6613;&#xFF0C;&#x63D2;&#x5165;&#x548C;&#x5220;&#x9664;&#x6BD4;&#x8F83;&#x56F0;&#x96BE;&#x3002;
+</code></pre></li>
+</ul>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="ArrayList源码解析.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page: ArrayList源码解析.md">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"LinkedList源码解析.md","level":"1.2.5","depth":2,"next":{"title":"Java并发编程","level":"1.3","depth":1,"ref":"","articles":[{"title":"并发锁相关.md","level":"1.3.1","depth":2,"path":"并发锁相关.md","ref":"并发锁相关.md","articles":[]},{"title":"鹅厂一面ReentrantLock差点一套带走我.md","level":"1.3.2","depth":2,"path":"鹅厂一面ReentrantLock差点一套带走我.md","ref":"鹅厂一面ReentrantLock差点一套带走我.md","articles":[]}]},"previous":{"title":"ArrayList源码解析.md","level":"1.2.4","depth":2,"path":"ArrayList源码解析.md","ref":"ArrayList源码解析.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["livereload"],"pluginsConfig":{"livereload":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"LinkedList源码解析.md","mtime":"2022-04-05T02:50:37.672Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-04-05T03:07:35.575Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-livereload/plugin.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
