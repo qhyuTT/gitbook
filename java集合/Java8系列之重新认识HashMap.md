@@ -1,163 +1,137 @@
+# HashMap1.8源码解析
 
-
-## Java 8系列之重新认识HashMap
-
-#### 面试常见问题以及答案
+### 面试常见问题以及答案
 
 > HashMap的数据结构是什么样子的？
 
-- 数组+链表+红黑树
+* 数组+链表+红黑树
 
 > hash冲突是如何解决的？为什么hashmap中的链表需要转成红黑树
 
-- 根据对冲突的处理方式不同，哈希表有两种实现方式，一种开放地址方式(Open addressing)，另一种是冲突链表方式(Separate chaining with linked lists)。**Java HashMap采用的是冲突链表方式**。
-- 主要是为了提升在 hash 冲突严重时（链表过长）的查找性能，使用链表的查找性能是 O(n)，而使用红黑树是 O(logn)。
+* 根据对冲突的处理方式不同，哈希表有两种实现方式，一种开放地址方式(Open addressing)，另一种是冲突链表方式(Separate chaining with linked lists)。**Java HashMap采用的是冲突链表方式**。
+* 主要是为了提升在 hash 冲突严重时（链表过长）的查找性能，使用链表的查找性能是 O(n)，而使用红黑树是 O(logn)。
 
 > 那在什么时候使用链表，又在什么时候使用红黑树？
 
-- 插入默认情况使用链表结点，当同一个索引位置的结点数量达到9个（阈值8）并且此时数组长度大于64才会出发链表结点转红黑树，源码方法为put中的treeifyBin。如果小于等于64那么就会进行扩容，因为此时数据的量还比较小。
-- 移除，当前索引位置的结点在移除后达到6个，并且该索引位置的结点为红黑树结点，就会出发红黑树转链表，源码方法为untreeify
+* 插入默认情况使用链表结点，当同一个索引位置的结点数量达到9个（阈值8）并且此时数组长度大于64才会出发链表结点转红黑树，源码方法为put中的treeifyBin。如果小于等于64那么就会进行扩容，因为此时数据的量还比较小。
+* 移除，当前索引位置的结点在移除后达到6个，并且该索引位置的结点为红黑树结点，就会出发红黑树转链表，源码方法为untreeify
 
 > HashMap的扩容机制是什么样子的？什么时候会触发扩容
 
-- 查看resize方法源码
-- hashmap元素越来越多的时候，hash碰撞的几率也会越来越高，因为table的长度是固定的，所以为了提高效率，就是进行扩容。
-- 扩容的机制就是threshold = 加载因子*数组大小，超过这个阈值扩容，扩容就是oldcap<<1,threshold <<1。
+* 查看resize方法源码
+* hashmap元素越来越多的时候，hash碰撞的几率也会越来越高，因为table的长度是固定的，所以为了提高效率，就是进行扩容。
+* 扩容的机制就是threshold = 加载因子\*数组大小，超过这个阈值扩容，扩容就是oldcap<<1,threshold <<1。
 
 > 扩容怎么避免rehash？
 
-- 其实这个问题不应该出现在jdk1.8中，但是面试官喜欢混淆看你是否理解透彻，所以就会问你1.8rehash什么什么的
-- java8实际上没有将原来数组中的元素rehash再作映射，他用的一个非常巧妙的方法newcap = oldcap<<1。
+* 其实这个问题不应该出现在jdk1.8中，但是面试官喜欢混淆看你是否理解透彻，所以就会问你1.8rehash什么什么的
+* java8实际上没有将原来数组中的元素rehash再作映射，他用的一个非常巧妙的方法newcap = oldcap<<1。
 
 > jdk1.8之前并发操作hashmap为什么会有死循环问题？
 
-- 结合jdk1.7的扩容可找到答案，1.7的源码解析后续给出链接
+* 结合jdk1.7的扩容可找到答案，1.7的源码解析后续给出链接
 
 > hashmap的数组长度为什么一定要是2的幂次方？
 
-- 查看put方法源码
-- 计算索引位置的公式为(lenth-1)&hash,当lenth为2的N次方时，lenth-1的二进制低位全是1，达到了和取模相同的效果，实现了均匀分布，如果不为2的N次方，hash冲突的概率会明显增大。
+* 查看put方法源码
+* 计算索引位置的公式为(lenth-1)\&hash,当lenth为2的N次方时，lenth-1的二进制低位全是1，达到了和取模相同的效果，实现了均匀分布，如果不为2的N次方，hash冲突的概率会明显增大。
 
 > 负载因子为什么是0.75？
 
-- 举个栗子，如果为1那么扩容的阈值就是数组大小，此时减少了空间的消耗，但是hash冲突的概率会增加，查询的成本也会增加；如果为0.5，hash冲突降低，空间会浪费。0.75也就是个这种值。当然我这个解释也是废话，感觉面试官问这个也是装*。
+* 举个栗子，如果为1那么扩容的阈值就是数组大小，此时减少了空间的消耗，但是hash冲突的概率会增加，查询的成本也会增加；如果为0.5，hash冲突降低，空间会浪费。0.75也就是个这种值。当然我这个解释也是废话，感觉面试官问这个也是装\*。
 
 > 为什么链表转红黑树的阈值为8？
 
-- 从注释中我们可以看到链表中结点为8时的概率，写的是 0.00000006，概率是非常低的，这个值是按照泊松分布来计算的，所以在时间和空间上权衡的结果定义了此阈值为8。
+* 从注释中我们可以看到链表中结点为8时的概率，写的是 0.00000006，概率是非常低的，这个值是按照泊松分布来计算的，所以在时间和空间上权衡的结果定义了此阈值为8。
 
-#### 前言
+### 前言
 
-- 下面这张图就是HashMap类图，非常简单，继承了一个AbstractMap抽象类
+*   下面这张图就是HashMap类图，非常简单，继承了一个AbstractMap抽象类
 
-  ![](../imags/HashMap.png)
+    <img src="../imags/HashMap.png" alt="" data-size="original">
+*   默认初始容量-必须为2的幂次方。这里作者用的是位运算，在hashmap源码中位运算无处不在。
 
-  
+    ```java
+        /**
+         * The default initial capacity - MUST be a power of two.
+         */
+        static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
+    ```
+*   为什么容量必须是2的幂次方？
 
-- 默认初始容量-必须为2的幂次方。这里作者用的是位运算，在hashmap源码中位运算无处不在。
+    首先这里说的容量必须是2的幂次方，并不是说在初始化的时候调用HashMap(int initialCapacity)构造函数中必须填写initialCapacity的值为2的幂次方。因为tableSizeFor方法会返回一个大于等于容量的一个2的次方数。
 
-  ```java
-      /**
-       * The default initial capacity - MUST be a power of two.
-       */
-      static final int DEFAULT_INITIAL_CAPACITY = 1 << 4; // aka 16
-  
-  ```
+    所谓的容量必须是2的幂次方，查看源码其实和计算数组的下标有关。
 
-  
+    ```java
+    tab[i = (n - 1) & hash]
+    ```
 
-- 为什么容量必须是2的幂次方？
+    假设n=3 二进制0011，如果按照上述的与运算计算，n-1 二进制为 0010，也就是说不管hash值为多少，这个下标都只会在tab\[2]中。
 
-  首先这里说的容量必须是2的幂次方，并不是说在初始化的时候调用HashMap(int initialCapacity)构造函数中必须填写initialCapacity的值为2的幂次方。因为tableSizeFor方法会返回一个大于等于容量的一个2的次方数。
+    假设n=15 二进制1111，n-1的二进制为1110，不管hash值为多少，下标tab\[1]都没有值。
 
-  所谓的容量必须是2的幂次方，查看源码其实和计算数组的下标有关。
+    而当n为2的幂次方的时候，n-1的低位就都是1，具体的下标和hash值相关。
+*   最大的容量，也就是2的30次方；如果使用构造函数进行声明的时候，超过了这个值就会以此为容量。
 
-  ```java
-  tab[i = (n - 1) & hash]
-  ```
+    ```java
+    /**
+     * The maximum capacity, used if a higher value is implicitly specified
+     * by either of the constructors with arguments.
+     * MUST be a power of two <= 1<<30.
+     */
+    static final int MAXIMUM_CAPACITY = 1 << 30;
+    ```
+*   加载因子默认为0.75
 
-  假设n=3 二进制0011，如果按照上述的与运算计算，n-1 二进制为 0010，也就是说不管hash值为多少，这个下标都只会在tab[2]中。
+    ```java
+    /**
+     * The load factor used when none specified in constructor.
+     */
+    static final float DEFAULT_LOAD_FACTOR = 0.75f;
+    ```
+*   链表转红黑树的阈值，在存储数据时，当链表长度大于8的时候，将转换为红黑树
 
-  假设n=15 二进制1111，n-1的二进制为1110，不管hash值为多少，下标tab[1]都没有值。
+    ```java
+    /**
+     * The bin count threshold for using a tree rather than list for a
+     * bin.  Bins are converted to trees when adding an element to a
+     * bin with at least this many nodes. The value must be greater
+     * than 2 and should be at least 8 to mesh with assumptions in
+     * tree removal about conversion back to plain bins upon
+     * shrinkage.
+     */
+    static final int TREEIFY_THRESHOLD = 8;
+    ```
+*   红黑树转为链表的阈值，应该小于TREEIFY\_THRESHOLD，当原有的红黑树内的结点数量小于6就将红黑树转换为链表。
 
-  而当n为2的幂次方的时候，n-1的低位就都是1，具体的下标和hash值相关。
+    ```java
+    /**
+     * The bin count threshold for untreeifying a (split) bin during a
+     * resize operation. Should be less than TREEIFY_THRESHOLD, and at
+     * most 6 to mesh with shrinkage detection under removal.
+     */
+    static final int UNTREEIFY_THRESHOLD = 6;
+    ```
+*   最小树行化容量阈值，当哈希表中的容量大于该值，才允许将链表转为红黑树，若桶内元素太多则是直接扩容不是树化，为了避免进行扩容，树化的冲突，这个值不能小于4\*TREEIFY\_THRESHOLD
 
-  
+    ```java
+    /**
+     * The smallest table capacity for which bins may be treeified.
+     * (Otherwise the table is resized if too many nodes in a bin.)
+     * Should be at least 4 * TREEIFY_THRESHOLD to avoid conflicts
+     * between resizing and treeification thresholds.
+     */
+    static final int MIN_TREEIFY_CAPACITY = 64;
+    ```
 
-- 最大的容量，也就是2的30次方；如果使用构造函数进行声明的时候，超过了这个值就会以此为容量。
+### HashMap源码分析
 
-  ```java
-  /**
-   * The maximum capacity, used if a higher value is implicitly specified
-   * by either of the constructors with arguments.
-   * MUST be a power of two <= 1<<30.
-   */
-  static final int MAXIMUM_CAPACITY = 1 << 30;
-  ```
-
-  
-
-- 加载因子默认为0.75
-
-  ```java
-  /**
-   * The load factor used when none specified in constructor.
-   */
-  static final float DEFAULT_LOAD_FACTOR = 0.75f;
-  ```
-
-  
-
-- 链表转红黑树的阈值，在存储数据时，当链表长度大于8的时候，将转换为红黑树
-
-  ```java
-  /**
-   * The bin count threshold for using a tree rather than list for a
-   * bin.  Bins are converted to trees when adding an element to a
-   * bin with at least this many nodes. The value must be greater
-   * than 2 and should be at least 8 to mesh with assumptions in
-   * tree removal about conversion back to plain bins upon
-   * shrinkage.
-   */
-  static final int TREEIFY_THRESHOLD = 8;
-  ```
-
-  
-
-- 红黑树转为链表的阈值，应该小于TREEIFY_THRESHOLD，当原有的红黑树内的结点数量小于6就将红黑树转换为链表。
-
-  ```java
-  /**
-   * The bin count threshold for untreeifying a (split) bin during a
-   * resize operation. Should be less than TREEIFY_THRESHOLD, and at
-   * most 6 to mesh with shrinkage detection under removal.
-   */
-  static final int UNTREEIFY_THRESHOLD = 6;
-  ```
-
-  
-
-- 最小树行化容量阈值，当哈希表中的容量大于该值，才允许将链表转为红黑树，若桶内元素太多则是直接扩容不是树化，为了避免进行扩容，树化的冲突，这个值不能小于4*TREEIFY_THRESHOLD
-
-  ```java
-  /**
-   * The smallest table capacity for which bins may be treeified.
-   * (Otherwise the table is resized if too many nodes in a bin.)
-   * Should be at least 4 * TREEIFY_THRESHOLD to avoid conflicts
-   * between resizing and treeification thresholds.
-   */
-  static final int MIN_TREEIFY_CAPACITY = 64;
-  ```
-
-
-
-#### HashMap源码分析
-
-##### 构造函数
+#### 构造函数
 
 开始分析源码，分析源码按照国际惯例从构造函数开始。
 
-从源码中可以分析出阈值在无参构造函数的时候默认为0，而有参数的构造函数，并不是像其他文章说的阈值等于加载因子*容量，而是initialCapacity的值返回一个大于等于容量的一个2的次方数。
+从源码中可以分析出阈值在无参构造函数的时候默认为0，而有参数的构造函数，并不是像其他文章说的阈值等于加载因子\*容量，而是initialCapacity的值返回一个大于等于容量的一个2的次方数。
 
 ```java
  /**
@@ -223,12 +197,9 @@ public HashMap(int initialCapacity) {
 public HashMap() {
     this.loadFactor = DEFAULT_LOAD_FACTOR; // all other fields defaulted
 }
-
 ```
 
-
-
-##### putMapEntries()
+#### putMapEntries()
 
 单独把这个构造函数中的putMapEntries方法拿出来说是因为其中的int和float的转换还挺有意思。
 
@@ -284,9 +255,7 @@ public HashMap(Map<? extends K, ? extends V> m) {
    
 ```
 
-
-
-##### hash(key)
+#### hash(key)
 
 ```java
 /**
@@ -314,9 +283,7 @@ public HashMap(Map<? extends K, ? extends V> m) {
     }
 ```
 
-
-
-##### put(K key, V value)
+#### put(K key, V value)
 
 ```java
 /**
@@ -414,9 +381,7 @@ public V put(K key, V value) {
     }
 ```
 
-
-
-##### resize()扩容	
+#### resize()扩容
 
 首先了解一下扩容时机，点击方法使用快捷键查看一下有哪些方法调用了resize方法。
 
@@ -432,7 +397,7 @@ putVal方法中当table为空或者table的容量为0的时候会调用reize方�
 
 **接下来分析一下resize的源码，详细步骤可查看下方的代码注释。**
 
-------
+
 
 扩容就是重新计算容量，向HashMap对象里不停的添加元素，而HashMap对象内部的数组无法装载更多的元素时，对象就需要扩大数组的长度，以便加入更多的元素。当然java里的数组时无法自动扩容的，方法是使用一个新得数组替换已有的容量小的数组，就像我们用一个小桶装水，如果想要装更多的水，就得换大水桶。
 
@@ -440,7 +405,7 @@ putVal方法中当table为空或者table的容量为0的时候会调用reize方�
 
 第一步：将小水桶换成大水桶。
 
-1、如果老的table容量为0，就会创建一个新得table，默认容量为16，阈值为加载因子*默认容量。
+1、如果老的table容量为0，就会创建一个新得table，默认容量为16，阈值为加载因子\*默认容量。
 
 2、什么情况下老的table容量为0，且阈值大于0？则把老的阈值赋值给新table的容量。（调用有参构造函数的时候会将传入的initialCapacity转为阈值，而此时table就是null）
 
@@ -549,9 +514,7 @@ final Node<K,V>[] resize() {
 }
 ```
 
-
-
-#### TreeNode源码解析
+### TreeNode源码解析
 
 我们都直到，目前HashMap采用数组+链表+红黑树的方式来存储和组织数据的。
 
@@ -569,9 +532,7 @@ final Node<K,V>[] resize() {
 
 **5、任意一个节点到每个叶子节点的所有路径中所包含的黑色节点数量是相等的**
 
-
-
-##### TreeNode的构造方法
+#### TreeNode的构造方法
 
 静态内部类TreeNode继承了LinkedHashMap的静态内部类Entry，构造方法调用的父类的构造方法。
 
@@ -588,9 +549,7 @@ static final class TreeNode<K,V> extends LinkedHashMap.Entry<K,V> {
         ........
 ```
 
-
-
-##### treeify(Node<K,V>[] tab)构建红黑树
+#### treeify(Node\<K,V>\[] tab)构建红黑树
 
 ```java
 /**
@@ -640,9 +599,7 @@ final void treeify(Node<K,V>[] tab) {
 }
 ```
 
-
-
-##### root()方法
+#### root()方法
 
 ```java
 /**
@@ -657,9 +614,7 @@ final TreeNode<K,V> root() {
 }
 ```
 
-
-
-((TreeNode<K,V>)e).split(this, newTab, j, oldCap);树行结构的扩容源码分析。要把红黑树拆分为高位和低位双向链表，然后进行处理。
+((TreeNode\<K,V>)e).split(this, newTab, j, oldCap);树行结构的扩容源码分析。要把红黑树拆分为高位和低位双向链表，然后进行处理。
 
 ```java
 /**
@@ -739,8 +694,6 @@ final void split(HashMap<K,V> map, Node<K,V>[] tab, int index, int bit) {
     
 }
 ```
-
-
 
 根据key值获取元素的值
 
